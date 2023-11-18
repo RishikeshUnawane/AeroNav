@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
-from pymongo import MongoClient
+from pymongo import MongoClient, ReturnDocument
+from bson import ObjectId
 
 app = Flask(__name__)
 
@@ -19,6 +20,14 @@ def view_orders():
     all_orders = orders.find()
     return render_template('customers/orders.html', orders=all_orders)
 
+@app.route('/customer/orders/<id>',methods=['GET', 'POST'])
+def view_order(id):
+    order = orders.find_one({'_id':ObjectId(id)})
+    if request.method == 'POST':
+        customer_id = 'addAnyExistingCustomerID'                      #TODO: take user ID from session or middle after adding authendication
+        order['customers'].append(ObjectId(customer_id))
+        order = orders.find_one_and_replace({'_id':ObjectId(id)}, order, return_document=ReturnDocument.AFTER)
+    return render_template('customers/order.html', order=order)
 
 #Adds sample data to DB
 @app.route('/populateDB', methods=["GET"])

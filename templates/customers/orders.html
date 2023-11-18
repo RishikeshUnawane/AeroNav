@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+    <h1>All Orders</h1>
+    <hr>
+    {% for order in orders %}
+        <div class="todo">
+            <p>{{ order }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

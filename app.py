@@ -70,7 +70,7 @@ def view_orders():
 def view_order(id):
     order = orders.find_one({'_id':ObjectId(id)})
     if request.method == 'POST':
-        customer_id = 'addAnyExistingCustomerID'                      #TODO: take user ID from session or middle after adding authendication
+        customer_id = session['_id']
         order['customers'].append(ObjectId(customer_id))
         order = orders.find_one_and_replace({'_id':ObjectId(id)}, order, return_document=ReturnDocument.AFTER)
     return render_template('customers/order.html', order=order)

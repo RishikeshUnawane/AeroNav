@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 from pymongo import MongoClient, ReturnDocument
+from pymongo.server_api import ServerApi
 import bcrypt
 from bson import ObjectId
 from geopy.geocoders import Nominatim
@@ -11,7 +12,16 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Setting up DB
+#Setting up Cloud DB
+# uri = "<MONGODB_URL>"
+# client = MongoClient(uri, server_api=ServerApi('1'))
+# try:
+#     client.admin.command('ping')
+#     print("Pinged your deployment. You successfully connected to MongoDB!")
+# except Exception as e:
+#     print(e)
+
+# Setting up Local DB
 client = MongoClient('localhost', 27017)
 db = client.AeroNav
 orders = db.orders
@@ -107,6 +117,7 @@ def view_my_order(id):
         orders.delete_one({'_id':ObjectId(id)})
         return redirect('/distributor/orders')
     elif request.method == 'POST':
+        #TODO: Algorithm
         pass
     return render_template('distributors/order.html', order=order)
 

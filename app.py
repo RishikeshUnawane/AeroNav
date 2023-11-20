@@ -69,11 +69,45 @@ def view_orders():
 @app.route('/customer/orders/<id>',methods=['GET', 'POST'])
 def view_order(id):
     order = orders.find_one({'_id':ObjectId(id)})
+    order['created_by'] = users.find_one({'_id':order['created_by']})
     if request.method == 'POST':
         customer_id = session['_id']
         order['customers'].append(ObjectId(customer_id))
         order = orders.find_one_and_replace({'_id':ObjectId(id)}, order, return_document=ReturnDocument.AFTER)
     return render_template('customers/order.html', order=order)
+
+@app.route('/distributor/order',methods=['GET', 'POST'])
+def create_order():
+    if request.method == 'POST':
+        distributor_id = session['_id']
+        order = orders.insert_one({
+            'title' : request.form.get('title'),
+            'created_by' : distributor_id,
+            'customers' : [],
+            'is_optimized' : False, 
+            'optimized_path' : [],
+            'vehicles' : request.form.get('vehicles'),
+            "timestamp": datetime.utcnow()
+        }) 
+        return redirect('/distributor/orders/' + str(order.inserted_id))
+    return render_template('distributors/create_order.html')
+
+@app.route('/distributor/orders',methods=['GET'])
+def view_my_orders():
+    all_orders = orders.find({'created_by' : session['_id']})
+    return render_template('distributors/orders.html', orders=all_orders)
+
+@app.route('/distributor/orders/<id>',methods=['GET', 'POST'])
+def view_my_order(id):
+    order = orders.find_one({'_id':ObjectId(id)})
+    order['created_by'] = users.find_one({'_id':order['created_by']})
+    for i in range(0,len(order['customers'])):
+        order['customers'][i] = users.find_one({'_id':ObjectId(order['customers'][i])})
+    if request.method == 'POST':
+        pass
+    return render_template('distributors/order.html', order=order)
+
+
 
 #Adds sample data to DB
 @app.route('/populateDB', methods=["GET"])

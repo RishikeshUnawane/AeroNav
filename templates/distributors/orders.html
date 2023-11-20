@@ -5,12 +5,12 @@
     <title>Orders</title>
 </head>
 <body>
-    <h1>All Orders</h1>
+    <h1>All My Orders</h1>
     <hr>
     {% for order in orders %}
         <div class="todo">
             <p>{{ order }}</p>
-            <a href="/customer/orders/{{order._id}}">View Order</a>
+            <a href="/distributor/orders/{{order._id}}">View Order</a>
         </div>
     {% endfor %}
 </body>

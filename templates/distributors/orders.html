@@ -13,5 +13,9 @@
             <a href="/distributor/orders/{{order._id}}">View Order</a>
         </div>
     {% endfor %}
+
+    <form action="/distributor/order" method="GET">
+        <input type="submit" value="Create Order">
+    </form>
 </body>
 </html>

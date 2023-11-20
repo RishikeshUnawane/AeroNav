@@ -103,7 +103,10 @@ def view_my_order(id):
     order['created_by'] = users.find_one({'_id':order['created_by']})
     for i in range(0,len(order['customers'])):
         order['customers'][i] = users.find_one({'_id':ObjectId(order['customers'][i])})
-    if request.method == 'POST':
+    if request.method == 'POST' and request.args.get('_method') == 'DELETE':
+        orders.delete_one({'_id':ObjectId(id)})
+        return redirect('/distributor/orders')
+    elif request.method == 'POST':
         pass
     return render_template('distributors/order.html', order=order)
 

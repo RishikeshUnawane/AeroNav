@@ -9,7 +9,46 @@
 </div>
 {% endif %}
 
-<form action="" method="post">
+
+<div class="container">
+    <div class="title">Registration</div>
+    <div class="content">
+        <form action="" method="post">
+            <div class="user-details">
+                <div class="input-box">
+                    <label for="Username" class="details">Username</label>
+                    <input type="text" id="Username" aria-describedby="emailHelp" name="username"
+                        placeholder="Enter your username" required>
+                </div>
+                <div class="input-box">
+                    <label for="InputPassword" class="details">Password</label>
+                    <input name="password" id="InputPassword" type="password" placeholder="Enter your password"
+                        required>
+                </div>
+                <div class="input-box">
+                    <label for="User" class="details">Type of user</label>
+                    <br>
+                    <select class="form-control" id="User" name="user_type">
+                        <option>Customer</option>
+                        <option>Distributor</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label for="Address" class="details">Address</label>
+                    <input name="address" id="Address" type="password" placeholder="Enter your password" required>
+                </div>
+            </div>
+
+            <div class="button">
+                <input type="submit" value="Register">
+                <!-- <button type="submit">Register</button> -->
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- <form action="" method="post">
     <div class="form-group">
         <label for="Username">Username</label>
         <input type="text" class="form-control" id="Username" aria-describedby="emailHelp" placeholder="Enter username"
@@ -31,6 +70,6 @@
         <textarea class="form-control" id="Address" rows="2" name="address"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Register</button>
-</form>
+</form> -->
 
 {% endblock %}

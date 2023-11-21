@@ -6,7 +6,7 @@ import bcrypt
 from bson import ObjectId
 from geopy.geocoders import Nominatim
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -20,6 +20,8 @@ users = db.users
 @app.route("/", methods=['GET', 'POST'])
 def sign_up():
     message = ''
+    if 'username' in session:
+        return render_template('index.html', username=session['username'])
     if request.method == "POST":
         user = request.form.get('username')
         password = request.form.get('password')

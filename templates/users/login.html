@@ -1,5 +1,5 @@
 {% extends "users/base.html" %}
-{% block title %}Login System{% endblock %}
+<!-- {% block title %}Login System{% endblock %} -->
 
 {% block content %}
 
@@ -9,7 +9,33 @@
 </div>
 {% endif %}
 
-<form action="" method="post">
+<div class="container">
+    <div class="title">Login</div>
+    <div class="content">
+        <form action="" method="post">
+            <div class="user-details">
+                <div class="input-box">
+                    <label for="Username" class="details">Username</label>
+                    <input type="text" id="Username" aria-describedby="emailHelp" name="username"
+                        placeholder="Enter your username" required>
+                </div>
+                <div class="input-box">
+                    <label for="InputPassword" class="details">Password</label>
+                    <input name="password" id="InputPassword" type="password" placeholder="Enter your password"
+                        required>
+                </div>
+            </div>
+
+            <div class="button">
+                <input type="submit" value="Login">
+                <!-- <button type="submit">Register</button> -->
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- <form action="" method="post">
     <div class="form-group">
         <label for="Username">Username</label>
         <input type="text" class="form-control" id="Username" aria-describedby="emailHelp" placeholder="Enter username"
@@ -20,5 +46,5 @@
         <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Password">
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</form> -->
 {% endblock %}

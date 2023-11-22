@@ -9,6 +9,10 @@
     <hr>
             <p>{{ order }}</p>
             <form method="post">
+                <!-- May need it for improving speed -->
+                <!-- <input type="hidden" name="customers" value="{{order['customers']}}">
+                <input type="hidden" name="created_by" value="{{order['created_by']}}">
+                <input type="hidden" name="vehicles" value="{{order['vehicles']}}"> -->
                 <input type="submit" value="Find Optimized Path">
             </form>
             <form action="?_method=DELETE" method="POST">

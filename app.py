@@ -1,9 +1,12 @@
+from GenericAlgorithm.index import findOptimizedPath
+
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 from pymongo import MongoClient, ReturnDocument
 from pymongo.server_api import ServerApi
 import bcrypt
+import folium
 from bson import ObjectId
 from geopy.geocoders import Nominatim
 
@@ -81,11 +84,11 @@ def view_orders():
 @app.route('/customer/orders/<id>',methods=['GET', 'POST'])
 def view_order(id):
     order = orders.find_one({'_id':ObjectId(id)})
-    order['created_by'] = users.find_one({'_id':order['created_by']})
     if request.method == 'POST':
         customer_id = session['_id']
         order['customers'].append(ObjectId(customer_id))
         order = orders.find_one_and_replace({'_id':ObjectId(id)}, order, return_document=ReturnDocument.AFTER)
+    order['created_by'] = users.find_one({'_id':order['created_by']})
     return render_template('customers/order.html', order=order)
 
 @app.route('/distributor/order',methods=['GET', 'POST'])
@@ -115,15 +118,39 @@ def view_my_order(id):
     order['created_by'] = users.find_one({'_id':order['created_by']})
     for i in range(0,len(order['customers'])):
         order['customers'][i] = users.find_one({'_id':ObjectId(order['customers'][i])})
+
     if request.method == 'POST' and request.args.get('_method') == 'DELETE':
         orders.delete_one({'_id':ObjectId(id)})
         return redirect('/distributor/orders')
+    
     elif request.method == 'POST':
-        #TODO: Algorithm
-        pass
+        optimized_path = findOptimizedPath(order['customers'],order['created_by'],order['vehicles'])
+        orderCopy = orders.find_one({'_id':ObjectId(id)})
+        orderCopy['optimized_path'] = optimized_path
+        orderCopy['is_optimized'] = True
+        orders.find_one_and_replace({'_id':ObjectId(id)}, orderCopy, return_document=ReturnDocument.AFTER)
+        return redirect('/distributor/orders/'+id)
+    
     return render_template('distributors/order.html', order=order)
 
-
+@app.route('/distributor/orders/<id>/visualize',methods=['GET'])
+def visualize_my_order(id):
+    order= orders.find_one({'_id':ObjectId(id)})
+    if not order['is_optimized']:
+        return redirect('/distributor/orders/'+id)
+    
+    map = folium.Map(location=order['optimized_path'][0][0], zoom_start=13)
+    colors = ['blue','red','green','orange','violet','black']
+    map_path = 'templates/map.html'
+    i=0
+    for vehicleRoute in order['optimized_path']:
+        route = folium.PolyLine(locations=vehicleRoute, color=colors[i])
+        i += 1
+        for each in vehicleRoute:
+          folium.Marker(each).add_to(map)
+        route.add_to(map)
+    map.save(map_path)
+    return render_template('map.html', map_path=map_path)
 
 #Adds sample data to DB
 @app.route('/populateDB', methods=["GET"])

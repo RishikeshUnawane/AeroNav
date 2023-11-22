@@ -1,0 +1,54 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order Form</title>
+</head>
+<body>
+    <h1>Create Order</h1>
+    <form method="post">
+        <input type="text" placeholder="Title of Order" name="title">
+        <input type="number" placeholder="Enter Number of Vehicles" name="vehicles">
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title> Create Order </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/createorder.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="title">Create Order</div>
+        <div class="content">
+            <form action="" method="post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <label for="title" class="details">Title of Order</label>
+                        <input type="text" placeholder="Title of Order" name="title">
+                        <!-- <input type="text" id="Username" aria-describedby="emailHelp" name="username"
+                            placeholder="Enter your username" required> -->
+                    </div>
+                    <div class="input-box">
+                        <label for="vehicles" class="details">Number of Vehicles</label>
+                        <!-- <input name="password" id="InputPassword" type="password" placeholder="Enter your password"
+                            required> -->
+                        <input type="number" placeholder="Enter Number of Vehicles" name="vehicles">
+                    </div>
+                </div>
+
+                <div class="button">
+                    <input type="submit" value="Create">
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

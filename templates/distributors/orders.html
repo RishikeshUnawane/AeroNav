@@ -2,20 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/orders.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Orders</title>
 </head>
 <body>
     <h1>All My Orders</h1>
     <hr>
     {% for order in orders %}
-        <div class="todo">
+        <!-- <div class="todo">
             <p>{{ order }}</p>
             <a href="/distributor/orders/{{order._id}}">View Order</a>
+        </div> -->
+
+        <div class="container mt-5 mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card p-3 mb-2">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="ms-2 c-details">
+                                    <h6 class="mb-0"><a href="/distributor/orders/{{order._id}}">{{ order.title }}</a></h6> <span>{{ order.timestamp
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="badge"> <span>{{ order.vehicles }}</span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
     {% endfor %}
 
     <form action="/distributor/order" method="GET">
         <input type="submit" value="Create Order">
     </form>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

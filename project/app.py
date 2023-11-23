@@ -110,6 +110,7 @@ def create_order():
             'is_optimized' : False, 
             'optimized_path' : [],
             'vehicles' : request.form.get('vehicles'),
+            'velocity' : request.form.get('velocity'),
             "timestamp": datetime.utcnow()
         }) 
         return redirect('/distributor/orders/' + str(order.inserted_id))

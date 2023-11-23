@@ -3,51 +3,95 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/order.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/orders.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>My Order</title>
 </head>
 
 <body>
-    <section class="light">
+    <br>
+    <h1>Order : {{ order.title}}</h1>
+    <br>
+    <!-- <section class="light">
         <div class="container py-4">
-            <div class="h1 text-center text-dark" id="pageHeaderTitle">Order : {{ order.title}}</div>
-
-            {% for customer in order.customers %}
-            <div class="abc">
+            <div class="h1 text-center text-dark" id="pageHeaderTitle">Order : {{ order.title}}</div> -->
+    <section class="articles">
+        {% for customer in order.customers %}
+        <!-- <div class="abc">
                 <article class="postcard light blue">
                     <div class="postcard__text t-dark">
                         <h1 class="postcard__title blue">{{ customer.username}}</h1>
-                        <!-- <div class="postcard__subtitle small">
-                        <time datetime="2020-05-25 12:00:00">
-                            <i class="fas fa-calendar-alt mr-2"></i>{{ order.timestamp}}
-                        </time>
-                    </div> -->
                         <div class="postcard__bar"></div>
 
                         <ul class="postcard__tagbox">
                             <li class="tag__item"><i class="fas fa-tag mr-2"></i>Location - {{ customer.location }}
                             </li>
-                            <!-- <li class="tag__item"><i class="fas fa-clock mr-2"></i>Delivery time.</li> -->
-                            <!-- <li class="tag__item play blue">
-                                    <a href="#"><i class="fas fa-play mr-2"></i>Play Episode</a>
-                                </li> -->
                         </ul>
                     </div>
                 </article>
+            </div> -->
+        <article class="dispp">
+            <div class="article-wrapper">
+                <div class="article-body">
+                    <h2><a href="/distributor/orders/{{order._id}}">{{ customer.username}}</a></h2>
+                    <ul>
+                        <li>
+                            <span>Location - {{ customer.location }}</span>
+                        </li>
+                        <li>
+                            <span>Time: {{ customer.timestamp }}</span>
+                        </li>
+                    </ul>
+
+                </div>
             </div>
+        </article>
 
-            {% endfor %}
-
-        </div>
+        {% endfor %}
     </section>
+
+    <br>
+    <br>
+    <!-- </div>
+    </section> -->
+
+    <!--  -->
+    <!-- <h1>Orders : {{ order.title}}</h1>
+    <hr>
+    <section class="articles">
+        {% for customer in order.customers %}
+
+        <article class="dispp">
+            <div class="article-wrapper">
+                <div class="article-body">
+                    <h2><a href="/distributor/orders/{{order._id}}">{{ order.title }}</a></h2>
+                    <ul>
+                        <li>
+                            <span>{{ order.timestamp}}</span>
+                        </li>
+                        <li>
+                            <span> Number of vehicles: {{ order.vehicles }}</span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </article>
+
+        {% endfor %}
+    </section> -->
+    <!--  -->
 
     <div class="container">
         <div class="content">
             <form method="post">
                 <div class="button">
+                    {% if(order.is_optimized == False) %}
                     <input type="submit" value="Find Optimized Path" class="btn btn-primary">
+                    {% else %}
+                    <a class="btn btn-primary" href="/distributor/orders/{{order._id}}/visualize">Visualize</a>
+                    {% endif %}
                 </div>
             </form>
         </div>
@@ -76,6 +120,9 @@
     </form> -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"

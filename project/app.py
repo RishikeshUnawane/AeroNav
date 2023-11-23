@@ -8,7 +8,7 @@ from pymongo.server_api import ServerApi
 import bcrypt
 import folium
 from bson import ObjectId
-# from geopy.geocoders import Nominatim
+from geopy.geocoders import Nominatim
 
 app = Flask(__name__, static_folder='static')
 app.config["SESSION_PERMANENT"] = False
@@ -40,8 +40,8 @@ def sign_up():
         password = request.form.get('password')
         user_type = request.form.get('user_type')
         address = request.form.get('address')
-        # geolocator = Nominatim(user_agent="app")
-        # location = geolocator.geocode(address)
+        geolocator = Nominatim(user_agent="app")
+        location = geolocator.geocode(address)
         user_found = users.find_one({"username": user})
         if user_found:
             message = 'There already is a user by that name'
@@ -53,8 +53,8 @@ def sign_up():
                     'encrypt_pass': hashed, 
                     'type': user_type, 
                     'location' : address,
-                    'x_cord' : 18.521428,
-                    'y_cord' : 73.8544541,
+                    'x_cord' : location.latitude,
+                    'y_cord' : location.longitude,
                     "timestamp": datetime.utcnow()
                     }
             x = users.insert_one(user_input)

@@ -87,7 +87,7 @@
         <div class="content">
             <form method="post">
                 <div class="button">
-                    {% if(order.is_optimized == "False") %}
+                    {% if(order.is_optimized == False) %}
                     <input type="submit" value="Find Optimized Path" class="btn btn-primary">
                     {% else %}
                     <a class="btn btn-primary" href="/distributor/orders/{{order._id}}/visualize">Visualize</a>

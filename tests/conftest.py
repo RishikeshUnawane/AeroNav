@@ -4,6 +4,7 @@ from pymongo import MongoClient
 
 @pytest.fixture
 def app():
+    # from app import create_app
     app = create_app({"TESTING": True})
     # with app.app_context():
     #     client = MongoClient('localhost', 27017)

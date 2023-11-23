@@ -1,10 +1,10 @@
-from GenericAlgorithm.index import findOptimizedPath
+# from GenericAlgorithm.index import findOptimizedPath
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_session import Session
+# from flask_session import Session
 from pymongo import MongoClient, ReturnDocument
-from pymongo.server_api import ServerApi
-from app import create_app
+# from pymongo.server_api import ServerApi
+# from app import create_app
 
 client = MongoClient('localhost', 27017)
 db = client.AeroNav
@@ -21,7 +21,7 @@ def test_signUpGet(client):
     assert b"<label for=\"Address\" class=\"details\">Address</label>" in response.data
     assert b"<input type=\"submit\" value=\"Register\">" in response.data
 
-def test_signUpFormPost(client, app):
+def test_signUpFormPostCustomer(client, app):
     response = client.post("/", data={
             'username' : 'Jhon',
             'encrypt_pass' : 'hello@1$',
@@ -35,8 +35,21 @@ def test_signUpFormPost(client, app):
     with app.app_context():
         assert users.find_one({"username": "Jhon"})
 
+def test_signUpFormPostDistributor(client, app):
+    response = client.post("/", data={
+            'username' : 'Mia',
+            'encrypt_pass' : 'hello@1$',
+            'type' : 'distributor',
+            'location' : 'Pune',
+            'x_cord' : 18.5204,
+            'y_cord' : 73.8567,
+            "timestamp": datetime.utcnow()
+    })
+    with app.app_context():
+        assert users.find_one({"username": "Mia"})
+
 def test_signUpFormError(client, app):
-    test_signUpFormPost(client, app)
+    test_signUpFormPostCustomer(client, app)
     if users.find_one({"username": "user"}):
         response = client.get("/")
         assert b"<p>There already is a user by that name</p>" in response.data
@@ -48,7 +61,7 @@ def test_signInGet(client):
     assert b"<label for=\"InputPassword\" class=\"details\">Password</label>" in response.data
     assert b"<input type=\"submit\" value=\"Login\">" in response.data
 
-def test_signInFormPost(client, app):
+def test_signInFormPostCustomer(client, app):
     response = client.post("/login", data={
         'username' : 'Jhon',
         'encrypt_pass' : 'hello@1$'
@@ -57,9 +70,18 @@ def test_signInFormPost(client, app):
     with app.app_context():
         assert users.find_one({"username": "Jhon"})
 
+def test_signInFormPostDistributor(client, app):
+    response = client.post("/login", data={
+        'username' : 'Mia',
+        'encrypt_pass' : 'hello@1$',
+    })
+
+    with app.app_context():
+        assert users.find_one({"username": "Mia"})
+
 def test_signInFormError(client, app):
     test_signInGet(client)
-    test_signInFormPost(client, app)
+    test_signInFormPostCustomer(client, app)
     user = users.find_one({"username": "Jhon"})
     if user:
         response = client.get("/")

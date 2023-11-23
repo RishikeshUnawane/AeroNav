@@ -35,6 +35,12 @@ def test_signUpFormPost(client, app):
     with app.app_context():
         assert users.find_one({"username": "Jhon"})
 
+def test_signUpFormError(client, app):
+    test_signUpFormPost(client, app)
+    if users.find_one({"username": "user"}):
+        response = client.get("/")
+        assert b"<p>There already is a user by that name</p>" in response.data
+
 def test_signInGet(client):
     response = client.get("/login")
     assert b"<div class=\"title\">Login</div>" in response.data
@@ -50,3 +56,15 @@ def test_signInFormPost(client, app):
 
     with app.app_context():
         assert users.find_one({"username": "Jhon"})
+
+def test_signInFormError(client, app):
+    test_signInGet(client)
+    test_signInFormPost(client, app)
+    user = users.find_one({"username": "Jhon"})
+    if user:
+        response = client.get("/")
+        if user['encrypt_pass']=='123':
+            assert b"<p>Invalid username/password combination</p>" in response.data
+    test_signInGet(client)
+    if users.find_one({"username": "user"}):
+        assert b"<p>User not found!</p>" in response.data

@@ -1,4 +1,4 @@
-from GenericAlgorithm.index import findOptimizedPath
+from GenericAlgorithm.index import findOptimizedPath, calculateDistanceForCustomer
 
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -89,11 +89,14 @@ def view_orders():
 @app.route('/customer/orders/<id>',methods=['GET', 'POST'])
 def view_order(id):
     order = orders.find_one({'_id':ObjectId(id)})
+    customer_id = session['_id']
     if request.method == 'POST':
-        customer_id = session['_id']
         order['customers'].append(ObjectId(customer_id))
         order = orders.find_one_and_replace({'_id':ObjectId(id)}, order, return_document=ReturnDocument.AFTER)
     order['created_by'] = users.find_one({'_id':order['created_by']})
+    if order['is_optimized']:
+        customer = users.find_one({'_id':ObjectId(customer_id)})
+        order['data'] = calculateDistanceForCustomer(order['optimized_path'], customer['x_cord'], customer['y_cord'])
     return render_template('customers/order.html', order=order)
 
 @app.route('/distributor/order',methods=['GET', 'POST'])

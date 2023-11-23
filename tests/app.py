@@ -51,10 +51,10 @@ def create_app(config):
                 message = 'There already is a user by that name'
                 return render_template('users/index.html', message=message)
             else:
-                hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                # hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
                 user_input = {
                         'username': user,
-                        'encrypt_pass': hashed, 
+                        'encrypt_pass': password, 
                         'type': user_type, 
                         'location' : address,
                         'x_cord' : location.latitude,

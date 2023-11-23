@@ -1,4 +1,4 @@
-from GenericAlgorithm.index import findOptimizedPath
+from GenericAlgorithm.index import findOptimizedPath, calculateDistanceForCustomer, calculateDistance
 
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -51,10 +51,10 @@ def create_app(config):
                 message = 'There already is a user by that name'
                 return render_template('users/index.html', message=message)
             else:
-                hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                # hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
                 user_input = {
                         'username': user,
-                        'encrypt_pass': hashed, 
+                        'encrypt_pass': password, 
                         'type': user_type, 
                         'location' : address,
                         'x_cord' : location.latitude,
@@ -98,6 +98,9 @@ def create_app(config):
             order['customers'].append(ObjectId(customer_id))
             order = orders.find_one_and_replace({'_id':ObjectId(id)}, order, return_document=ReturnDocument.AFTER)
         order['created_by'] = users.find_one({'_id':order['created_by']})
+        if order['is_optimized']:
+            customer = users.find_one({'_id':ObjectId(customer_id)})
+            order['data'] = calculateDistanceForCustomer(order['optimized_path'], customer['x_cord'], customer['y_cord'])
         return render_template('customers/order.html', order=order)
 
     @app.route('/distributor/order',methods=['GET', 'POST'])
@@ -111,6 +114,7 @@ def create_app(config):
                 'is_optimized' : False, 
                 'optimized_path' : [],
                 'vehicles' : request.form.get('vehicles'),
+                'velocity' : request.form.get('velocity'),
                 "timestamp": datetime.utcnow()
             }) 
             return redirect('/distributor/orders/' + str(order.inserted_id))
@@ -139,7 +143,8 @@ def create_app(config):
             orderCopy['is_optimized'] = True
             orders.find_one_and_replace({'_id':ObjectId(id)}, orderCopy, return_document=ReturnDocument.AFTER)
             return redirect('/distributor/orders/'+id)
-        
+        if order['is_optimized']:
+            order['data'] = calculateDistance(order['optimized_path'])
         return render_template('distributors/order.html', order=order)
 
     @app.route('/distributor/orders/<id>/visualize',methods=['GET'])

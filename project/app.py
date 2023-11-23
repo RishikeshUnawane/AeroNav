@@ -97,7 +97,7 @@ def view_order(id):
     if order['is_optimized']:
         customer = users.find_one({'_id':ObjectId(customer_id)})
         order['data'] = calculateDistanceForCustomer(order['optimized_path'], customer['x_cord'], customer['y_cord'])
-    return render_template('customers/order.html', order=order)
+    return render_template('customers/order.html', order=order, _id2=session['_id'])
 
 @app.route('/distributor/order',methods=['GET', 'POST'])
 def create_order():

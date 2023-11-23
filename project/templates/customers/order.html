@@ -16,6 +16,9 @@
                 <input type="submit" value="Book">
             </form> -->
     <h1>Order</h1>
+
+    <!-- <p>{{order}}</p> -->
+
     <br>
     <section class="articles">
 
@@ -40,6 +43,10 @@
     <br>
     <br>
 
+
+    {% if _id2 in order.customers %}
+
+    {% else %}
     <div class="container">
         <div class="content">
             <form method="post">
@@ -49,6 +56,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
     <br>
 
     <!-- <form method="post">

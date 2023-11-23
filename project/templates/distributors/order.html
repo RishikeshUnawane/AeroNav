@@ -12,7 +12,7 @@
 <body>
     <br>
     <h1>Order : {{ order.title}}</h1>
-    <hr>
+    <br>
     <!-- <section class="light">
         <div class="container py-4">
             <div class="h1 text-center text-dark" id="pageHeaderTitle">Order : {{ order.title}}</div> -->
@@ -39,9 +39,9 @@
                         <li>
                             <span>Location - {{ customer.location }}</span>
                         </li>
-                        <!-- <li>
-                            <span> Number of vehicles: {{ order.vehicles }}</span>
-                        </li> -->
+                        <li>
+                            <span>Time: {{ customer.timestamp }}</span>
+                        </li>
                     </ul>
 
                 </div>
@@ -87,7 +87,11 @@
         <div class="content">
             <form method="post">
                 <div class="button">
+                    {% if(order.is_optimized == "False") %}
                     <input type="submit" value="Find Optimized Path" class="btn btn-primary">
+                    {% else %}
+                    <a class="btn btn-primary" href="/distributor/orders/{{order._id}}/visualize">Visualize</a>
+                    {% endif %}
                 </div>
             </form>
         </div>

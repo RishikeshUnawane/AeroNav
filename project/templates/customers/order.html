@@ -68,9 +68,11 @@
                         <li>
                             <span> Number of vehicles: {{ order.vehicles }}</span>
                         </li>
+                        {% if order.data%}
                         <li>
                             <span> Time for Delivery: {{ order.data / 40 }}</span>
                         </li>
+                        {% endif %}
                     </ul>
 
                 </div>

@@ -3,7 +3,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 from pymongo import MongoClient, ReturnDocument
 import test_registration
+import test_distributors
 from bson import ObjectId
+# from app import populateDB
 
 client = MongoClient('localhost', 27017)
 db = client.AeroNav
@@ -20,6 +22,7 @@ def test_customerViewOrders(client, app):
 
 # def test_customerViewOrdersId(client, app):
 #     test_customerViewOrders(client, app)
+#     test_distributors.test_addOrderToDb(client, app)
 #     order = orders.find_one({'title' : 'My Fav Order'})
 #     response = client.get("/customer/orders/"+str(order['_id']))
 #     assert b"<title>Order</title>" in response.data

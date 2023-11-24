@@ -16,8 +16,11 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 #Setting up Cloud DB
-# uri = "<MONGODB_URL>"
-# client = MongoClient(uri, server_api=ServerApi('1'))
+uri = "mongodb+srv://admin:YPhUfIhaZcnF3F6Z@cluster0.nnkuu5o.mongodb.net/"
+client = MongoClient(uri, server_api=ServerApi('1'))
+db = client.AeroNav
+orders = db.orders
+users = db.users
 # try:
 #     client.admin.command('ping')
 #     print("Pinged your deployment. You successfully connected to MongoDB!")
@@ -25,10 +28,10 @@ Session(app)
 #     print(e)
 
 # Setting up Local DB
-client = MongoClient('localhost', 27017)
-db = client.AeroNav
-orders = db.orders
-users = db.users
+# client = MongoClient('localhost', 27017)
+# db = client.AeroNav
+# orders = db.orders
+# users = db.users
 
 @app.route("/", methods=['GET', 'POST'])
 def sign_up():
